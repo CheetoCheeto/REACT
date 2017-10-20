@@ -15,10 +15,12 @@ const FormItem = Form.Item;
 const SubMenu = Menu.SubMenu;
 const TabPane = Tabs.TabPane;
 const MenuItemGroup = Menu.ItemGroup;
-import {Router, Route, Link, browserHistory} from 'react-router'
+//link标签不可用问题 通过引入react-router-dom解决，版本更新react-router废弃引起
+import {Link} from 'react-router-dom';
 class PCHeader extends React.Component {
 	constructor() {
 		super();
+//ant-design中的相关定义，参照ant-design官方文档
 		this.state = {
 			current: 'top',
 			modalVisible: false,
@@ -28,7 +30,8 @@ class PCHeader extends React.Component {
 			userid: 0
 		};
 	};
-
+//本地存储，利用localstorage保持登录状态；
+//问题：关闭浏览器再次启动服务仍然保持登录，尝试改为sessionstorage；
 	componentWillMount(){
 		if (localStorage.userid!='') {
 			this.setState({hasLogined:true});
@@ -50,9 +53,10 @@ class PCHeader extends React.Component {
 			}
 		}
 	};
+	//页面开始向 API 进行提交数据
+	//利用fetch插件完成
 	handleSubmit(e)
 	{
-		//页面开始向 API 进行提交数据
 		e.preventDefault();
 		var myFetchOptions = {
 			method: 'GET'
@@ -76,6 +80,7 @@ class PCHeader extends React.Component {
 		message.success("请求成功！");
 		this.setModalVisible(false);
 	};
+
 	callback(key) {
 		if (key == 1) {
 			this.setState({action: 'login'});
@@ -83,20 +88,22 @@ class PCHeader extends React.Component {
 			this.setState({action: 'register'});
 		}
 	};
+	//退出部分
 	logout(){
 		localStorage.userid= '';
 		localStorage.userNickName = '';
 		this.setState({hasLogined:false});
 	};
+
 	render() {
-		let {getFieldDecorator} = this.props.form;
+		const { getFieldDecorator } = this.props.form;
 		const userShow = this.state.hasLogined
 			? <Menu.Item key="logout" class="register">
 					<Button type="primary" htmlType="button">{this.state.userNickName}</Button>
 					&nbsp;&nbsp;
-
+					<Link target="_blank" to={`/usercenter`}>
 						<Button type="dashed" htmlType="button">个人中心</Button>
-
+					</Link>
 					&nbsp;&nbsp;
 					<Button type="ghost" htmlType="button" onClick={this.logout.bind(this)}>退出</Button>
 				</Menu.Item>
@@ -109,7 +116,7 @@ class PCHeader extends React.Component {
 					<Col span={2}></Col>
 					<Col span={4}>
 						<a href="/" class="logo">
-							<img src="./src/image/logo.png" alt="logo"/>
+							<img src="/src/images/logo.png" alt="logo"/>
 							<span>ReactNews</span>
 						</a>
 					</Col>
@@ -139,18 +146,6 @@ class PCHeader extends React.Component {
 							<Menu.Item key="shishang">
 								<Icon type="appstore"/>时尚
 							</Menu.Item>
-              <Menu.Item>
-
-							</Menu.Item>
-              <Menu.Item>
-
-							</Menu.Item>
-              <Menu.Item>
-
-              </Menu.Item>
-              <Menu.Item>
-
-              </Menu.Item>
 							{userShow}
 						</Menu>
 						<Modal title="用户中心" wrapClassName="vertical-center-modal" visible={this.state.modalVisible} onCancel= {()=>this.setModalVisible(false)} onOk={() => this.setModalVisible(false)} okText="关闭">
@@ -158,24 +153,24 @@ class PCHeader extends React.Component {
 								<TabPane tab="登录" key="1">
 									<Form horizontal onSubmit={this.handleSubmit.bind(this)}>
 										<FormItem label="账户">
-											<Input placeholder="请输入您的账号" {...getFieldDecorator('userName')}/>
+											{getFieldDecorator('userName')(<Input placeholder="请输入您的账号" />)}
 										</FormItem>
 										<FormItem label="密码">
-											<Input type="password" placeholder="请输入您的密码" {...getFieldDecorator('password')}/>
+											{getFieldDecorator('password')(<Input type="password" placeholder="请输入您的密码" />)}
 										</FormItem>
 										<Button type="primary" htmlType="submit">登录</Button>
 									</Form>
 								</TabPane>
 								<TabPane tab="注册" key="2">
-									<Form layout='horizontal' onSubmit={this.handleSubmit.bind(this)}>
+									<Form horizontal onSubmit={this.handleSubmit.bind(this)}>
 										<FormItem label="账户">
-											<Input placeholder="请输入您的账号" {...getFieldDecorator('r_userName')}/>
+											{getFieldDecorator('r_userName')(<Input placeholder="请输入您的账号"/>)}
 										</FormItem>
 										<FormItem label="密码">
-											<Input type="password" placeholder="请输入您的密码" {...getFieldDecorator('r_password')}/>
+											{getFieldDecorator('r_password')(<Input type="password" placeholder="请输入您的密码" />)}
 										</FormItem>
 										<FormItem label="确认密码">
-											<Input type="password" placeholder="请再次输入您的密码" {...getFieldDecorator('r_confirmPassword')}/>
+											{getFieldDecorator('r_confirmPassword')(<Input type="password" placeholder="请再次输入您的密码" />)}
 										</FormItem>
 										<Button type="primary" htmlType="submit">注册</Button>
 									</Form>
