@@ -33,9 +33,9 @@ class PCHeader extends React.Component {
 //本地存储，利用localstorage保持登录状态；
 //问题：关闭浏览器再次启动服务仍然保持登录，尝试改为sessionstorage；
 	componentWillMount(){
-		if (localStorage.userid!='') {
+		if (sessionStorage.userid!='') {
 			this.setState({hasLogined:true});
-			this.setState({userNickName:localStorage.userNickName,userid:localStorage.userid});
+			this.setState({userNickName:sessionStorage.userNickName,userid:sessionStorage.userid});
 		}
 	};
 
@@ -71,8 +71,8 @@ class PCHeader extends React.Component {
 		.then(response => response.json())
 		.then(json => {
 			this.setState({userNickName: json.NickUserName, userid: json.UserId});
-			localStorage.userid= json.UserId;
-			localStorage.userNickName = json.NickUserName;
+			sessionStorage.userid= json.UserId;
+			sessionStorage.userNickName = json.NickUserName;
 		});
 		if (this.state.action=="login") {
 			this.setState({hasLogined:true});
@@ -90,14 +90,16 @@ class PCHeader extends React.Component {
 	};
 	//退出部分
 	logout(){
-		localStorage.userid= '';
-		localStorage.userNickName = '';
+		sessionStorage.userid= '';
+		sessionStorage.userNickName = '';
 		this.setState({hasLogined:false});
 	};
 
 	render() {
 		const { getFieldDecorator } = this.props.form;
+		{/*未登录↓隐藏通过haslogined控制*/}
 		const userShow = this.state.hasLogined
+		//隐藏
 			? <Menu.Item key="logout" class="register">
 					<Button type="primary" htmlType="button">{this.state.userNickName}</Button>
 					&nbsp;&nbsp;
@@ -107,6 +109,7 @@ class PCHeader extends React.Component {
 					&nbsp;&nbsp;
 					<Button type="ghost" htmlType="button" onClick={this.logout.bind(this)}>退出</Button>
 				</Menu.Item>
+				//显示
 			: <Menu.Item key="register" class="register">
 				<Icon type="appstore"/>注册/登录
 			</Menu.Item>;
@@ -120,8 +123,9 @@ class PCHeader extends React.Component {
 							<span>ReactNews</span>
 						</a>
 					</Col>
+					{/*PC端标签部分*/}
 					<Col span={16}>
-						<Menu mode="horizontal" onClick={this.handleClick.bind(this)} selectedKeys={[this.state.current]}>
+						<Menu theme='dark'mode="horizontal" onClick={this.handleClick.bind(this)} selectedKeys={[this.state.current]}>
 							<Menu.Item key="top">
 								<Icon type="appstore"/>头条
 							</Menu.Item>
@@ -148,6 +152,7 @@ class PCHeader extends React.Component {
 							</Menu.Item>
 							{userShow}
 						</Menu>
+						{/*用户注册登录部分tab实现*/}
 						<Modal title="用户中心" wrapClassName="vertical-center-modal" visible={this.state.modalVisible} onCancel= {()=>this.setModalVisible(false)} onOk={() => this.setModalVisible(false)} okText="关闭">
 							<Tabs type="card" onChange={this.callback.bind(this)}>
 								<TabPane tab="登录" key="1">

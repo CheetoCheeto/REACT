@@ -27,6 +27,7 @@
 
 .container{
   padding-top: 10px;
+
 }
 
 .leftContainer {
@@ -37,7 +38,9 @@
 .carousel {
     width: 400px;
     float: left;
+    padding-top:36px;/*chrome-react插件查询的 将轮播图下移36px 36px为tab组件高度，非设计 框架自带*/
 }
+
 
 .ant-card{
   margin-top: 5px !important;
@@ -85,7 +88,7 @@
 }
 
 .tabs_news {
-    padding-left: 10px;
+    margin:0 50px;
     width: 460px;
     float: left;
 }
