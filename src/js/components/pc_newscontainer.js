@@ -29,23 +29,27 @@ export default class PCNewsContainer extends React.Component {
                   <div><img src="./src/images/carousel_4.jpg"/></div>
                 </Carousel>
               </div>
+              <PCNewsImageBlock/>
             </div>
 						<Tabs class='tabs_news'>
 							<TabPane tab='新闻' key='1'>
-								<PCNewsBlock count={20} type='top' width='100%' bordered='false'/>
+								<PCNewsBlock count={16} type='top' width='100%' bordered='false'/>
 							</TabPane>
 							<TabPane tab='国际' key='2'>
-								<PCNewsBlock count={20} type='guoji' width='100%' bordered='false'/>
+								<PCNewsBlock count={16} type='guoji' width='100%' bordered='false'/>
 							</TabPane>
 							<TabPane tab='娱乐' key='3'>
-								<PCNewsBlock count={20} type='yule' width='100%' bordered='false'/>
+								<PCNewsBlock count={16} type='yule' width='100%' bordered='false'/>
 							</TabPane>
 							<TabPane tab='体育' key='4'>
-								<PCNewsBlock count={20} type='tiyu' width='100%' bordered='false'/>
+								<PCNewsBlock count={16} type='tiyu' width='100%' bordered='false'/>
 							</TabPane>
 						</Tabs>
+            <div><h1>没网很难受 这边要放卡片</h1></div>
           </Col>
-          <Col span={2}></Col>
+          <Col span={2}>
+          
+          </Col>
         </Row>
       </div>
     );
